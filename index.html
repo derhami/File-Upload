@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آپلود فایل با رمز</title>
+
+    <!-- لینک به فونت Vazirmatn از گوگل -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazir:wght@400;700&display=swap">
+
+    <style>
+        body {
+            font-family: 'Vazir', sans-serif; /* استفاده از فونت Vazirmatn */
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+        }
+
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+        }
+    </style>
+</head>
+<body>
+    <div id="overlay"></div>
+    <div id="popup">
+        <p id="message"></p>
+        <p id="fileLink"></p>
+        <button onclick="closePopup()">بستن</button>
+    </div>
+
+    <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data" onsubmit="return uploadFile()">
+        <h2>آپلود فایل با رمز</h2>
+        <label for="file">انتخاب فایل:</label>
+        <input type="file" name="file" id="file" required>
+        <label for="password">رمز:</label>
+        <input type="password" name="password" id="password" required>
+        <input type="submit" value="آپلود">
+    </form>
+
+    <script>
+        function uploadFile() {
+            var form = document.getElementById('uploadForm');
+            var formData = new FormData(form);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', form.action, true);
+            xhr.onload = function() {
+                var response = JSON.parse(xhr.responseText);
+                showMessage(response.message, response.success, response.fileLink);
+            };
+
+            xhr.send(formData);
+            return false;
+        }
+
+        function showMessage(message, success, fileLink) {
+            var popup = document.getElementById('popup');
+            var overlay = document.getElementById('overlay');
+            var messageElement = document.getElementById('message');
+            var fileLinkElement = document.getElementById('fileLink');
+
+            messageElement.innerHTML = message;
+            if (success) {
+                fileLinkElement.innerHTML = '<a href="' + fileLink + '" target="_blank">لینک فایل</a>';
+            }
+
+            popup.style.display = 'block';
+            overlay.style.display = 'block';
+        }
+
+        function closePopup() {
+            var popup = document.getElementById('popup');
+            var overlay = document.getElementById('overlay');
+
+            popup.style.display = 'none';
+            overlay.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
