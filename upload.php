@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // انتقال فایل به مسیر آپلود
     if (move_uploaded_file($uploadedFile['tmp_name'], $destination)) {
-        $fileLink = 'https://adrienkesht.com/uploads/' . $fileName;
+        $fileLink = 'https://your_website.com/uploads/' . $fileName;
         die(json_encode(['message' => 'فایل با موفقیت آپلود شد.', 'success' => true, 'fileLink' => $fileLink]));
     } else {
         die(json_encode(['message' => 'خطا در انتقال فایل.', 'success' => false]));
