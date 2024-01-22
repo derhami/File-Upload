@@ -19,7 +19,7 @@ if (!file_exists($uploadDirectory)) {
 // بررسی ارسال فرم
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // بررسی رمز
-    $validPassword = '4995651'; // رمز مورد نظر
+    $validPassword = 'your_password'; // رمز مورد نظر
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     if ($password !== $validPassword) {
         die(json_encode(['message' => 'رمز اشتباه است.', 'success' => false]));
